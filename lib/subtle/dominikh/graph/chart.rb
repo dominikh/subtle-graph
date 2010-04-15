@@ -5,7 +5,7 @@ module Dominikh
     attr_reader :values
 
     # @param [Fixnum] width The width of the chart. This corresponds
-    # with the number of values.
+    # with the number of values-1.
     # @param [Fixnum] height The height of the chart.
     # @param [Boolean] autoscale If false, values are expected to be
     # percentage values. If true, values will be dynamically scaled
@@ -30,7 +30,7 @@ module Dominikh
     # @param [Array<Numeric>] arr An array of numbers
     # @return [Array] The array of values, possibly truncated
     def values=(arr)
-      @values = arr[0..@icon.width]
+      @values = arr[0..@icon.width-1]
       max = @values.max
       @biggest_value = max if max > @biggest_value
       render
@@ -62,7 +62,7 @@ module Dominikh
       end
 
       @values.each_with_index do |value, index|
-        x = width - index
+        x = width - 1 - index
         if !@autoscale
           y = ((height / 100.0) * value).round
         else
@@ -70,7 +70,7 @@ module Dominikh
         end
 
         # draw the bar
-        height.downto(height - y) do |one_y|
+        height.downto(height - 1 - y) do |one_y|
           draw(x, one_y)
         end
       end
